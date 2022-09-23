@@ -29,5 +29,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [BarangController::class, 'index']);
         Route::get('/create', [BarangController::class, 'create']);
         Route::post('/create', [BarangController::class, 'store']);
+        Route::get('/search-tahun', [BarangController::class, 'searchTahun']);
+        Route::post('/search-tahun', [BarangController::class, 'searchTahunResult']);
+        Route::get('/search-ruang', [BarangController::class, 'searchRuangan']);
+        Route::post('/search-ruang', [BarangController::class, 'searchRuanganResult']);
     });
 });

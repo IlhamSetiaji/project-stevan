@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BarangRequest;
-use App\Models\Barang;
 use Exception;
+use App\Models\Barang;
 use Illuminate\Http\Request;
+use App\Http\Requests\BarangRequest;
+use App\Http\Requests\SearchTahunRequest;
+use App\Http\Requests\SearchRuanganRequest;
 
 class BarangController extends Controller
 {
@@ -41,5 +43,35 @@ class BarangController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('status', $e->getMessage());
         }
+    }
+
+    public function searchTahun()
+    {
+        return view('barang.search-tahun');
+    }
+
+    public function searchTahunResult(SearchTahunRequest $request)
+    {
+        $payload = $request->validated();
+        $barang = Barang::where('tahun_perolehan', $payload['tahun'])->get();
+        if (sizeof($barang) == 0) {
+            return redirect()->back()->with('status', 'Data barang berdasarkan tahun tidak ditemukan, silahkan coba lagi');
+        }
+        return view('barang.index', compact('barang'));
+    }
+
+    public function searchRuangan()
+    {
+        return view('barang.search-ruang');
+    }
+
+    public function searchRuanganResult(SearchRuanganRequest $request)
+    {
+        $payload = $request->validated();
+        $barang = Barang::where('ruangan', $payload['ruangan'])->get();
+        if (sizeof($barang) == 0) {
+            return redirect()->back()->with('status', 'Data barang berdasarkan ruangan tidak ditemukan, silahkan coba lagi');
+        }
+        return view('barang.index', compact('barang'));
     }
 }
